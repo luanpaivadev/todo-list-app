@@ -11,3 +11,9 @@
 ul li {
     font-size: 18px;
 }
+
+#btn-delete {
+    border: none;
+    background: none;
+    color: brown;
+}
