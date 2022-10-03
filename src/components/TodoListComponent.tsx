@@ -40,6 +40,14 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
             setTasks([...tasks, task])
             setCount(count + 1)
             setTask(taskInit)
+
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Tarefa adicionada com sucesso!',
+                showConfirmButton: false,
+                timer: 1500
+            })
         }
     }
 
