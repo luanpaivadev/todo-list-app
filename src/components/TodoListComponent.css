@@ -12,8 +12,13 @@ ul li {
     font-size: 18px;
 }
 
-#btn-delete {
+#btn-deleteTask, 
+#btn-updateTask {
     border: none;
     background: none;
-    color: brown;
+}
+
+#task {
+    border-radius: 30px;
+    margin-bottom: 10px;
 }

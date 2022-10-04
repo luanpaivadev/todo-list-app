@@ -51,6 +51,32 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
         }
     }
 
+    async function updateTask(task: Task) {
+        const { value: text } = await Swal.fire({
+            input: 'textarea',
+            inputLabel: 'Descrição da tarefa',
+            inputPlaceholder: 'Type your message here...',
+            inputAttributes: {
+                'aria-label': 'Type your message here',
+                'required': 'true'
+            },
+            inputValue: task.description,
+            showCancelButton: true
+        })
+
+        if (text) {
+            task.description = text
+            setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Tarefa atualizada com sucesso!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+    }
+
     function deleteTask(task: Task) {
         Swal.fire({
             title: 'Deseja excluir a tarefa selecionada?',
@@ -73,7 +99,7 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
     }
 
     return (
-        <div className='container shadow mb-5 bg-body rounded'>
+        <div className='container-sm shadow mb-5 mt-4 p-3 bg-body rounded'>
 
             <div>
                 <h2 className='text-center mb-4'><strong>{props.title}</strong></h2>
@@ -85,9 +111,9 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
                             <TextField sx={{
                                 width: '100%'
                             }}
-                                id="standard-basic"
+                                id="outlined-basic"
                                 label="Descrição da tarefa"
-                                variant="standard"
+                                variant="outlined"
                                 value={task?.description}
                                 onChange={event => setTask({ id: count, description: event.target.value })}
                                 onKeyDown={event => event.key === 'Enter' ? addTask() : ''} />
@@ -103,38 +129,37 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
                     bgcolor: 'background.paper',
                     position: 'relative',
                     overflow: 'auto',
-                    maxHeight: 300,
+                    maxHeight: 500,
                     '& ul': { padding: 0 },
                 }}>
-                <ul className='list-group list-group-flush'>
+                <ul className='list-group'>
                     {
-                        tasks.map(task => (
-                            <li key={task.id} className={task.completed ? completed : noCompleted}>
-                                <div className='row align-items-center'>
-                                    <div className='col-10' onClick={() => setDone(task)}>
-                                        <span className='align-middle'> <strong>#{task.id}</strong> - {task.description}</span>
-                                    </div>
-                                    <div className='col-1 text-center'>
-                                        {
-                                            task.completed &&
-                                            <span className="material-symbols-outlined align-middle">
-                                                check
-                                            </span>
-                                        }
-                                    </div>
-                                    {
-                                        task.completed &&
-                                        <div className='col-1'>
-                                            <button id='btn-delete' onClick={() => deleteTask(task)}>
-                                                <span className="material-symbols-outlined align-middle">
-                                                    delete
-                                                </span>
-                                            </button>
+                        tasks.length > 0 ?
+                            tasks.map(task => (
+                                <li key={task.id} className={task.completed ? completed : noCompleted} id='task'>
+                                    <div className='row align-items-center p-2'>
+                                        <div className='col-10' onClick={() => setDone(task)}>
+                                            <span className='align-middle'> <strong>#{task.id}</strong> - {task.description}</span>
                                         </div>
-                                    }
-                                </div>
-                            </li>
-                        ))
+                                        <div className='col-2 text-center'>
+                                            {
+                                                !task.completed ?
+                                                    <button id='btn-updateTask' onClick={() => updateTask(task)}>
+                                                        <span className="material-symbols-outlined align-middle">
+                                                            edit
+                                                        </span>
+                                                    </button>
+                                                    :
+                                                    <button id='btn-deleteTask' onClick={() => deleteTask(task)}>
+                                                        <span className="material-symbols-outlined align-middle">
+                                                            delete
+                                                        </span>
+                                                    </button>
+                                            }
+                                        </div>
+                                    </div>
+                                </li>
+                            )) : <p className="form-text text-center">Lista sem tarefas.</p>
                     }
                 </ul>
             </List>
