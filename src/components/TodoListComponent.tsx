@@ -1,30 +1,47 @@
 import { Box, List } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import './TodoListComponent.css'
+import './TodoListComponent.css';
 
 interface TodoListComponentProps {
     title: string
     data?: Task[]
 }
 
-interface Task {
-    id: number
+export interface Task {
+    id?: number
     description: string
-    completed?: boolean
+    completed: boolean
 }
+
+const http = axios.create({
+    baseURL: 'http://localhost:8080'
+})
 
 const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
 
-    const taskInit: Task = { id: 0, description: '' }
+    const taskInit: Task = { description: '', completed: false }
 
     const completed = 'list-group-item list-group-item-action list-group-item-success'
     const noCompleted = 'list-group-item list-group-item-action'
 
     const [tasks, setTasks] = useState<Task[]>([])
-    const [task, setTask] = useState(taskInit)
-    const [count, setCount] = useState(1)
+    const [task, setTask] = useState<Task>(taskInit)
+
+    useEffect(() => {
+        http
+            .get<Task[]>('/v1/tasks')
+            .then(response => setTasks(response.data))
+            .catch(function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'SERVER COMMUNICATION ERROR'
+                })
+            })
+    }, [])
 
     function setDone(task: Task): void {
         if (!task.completed) {
@@ -37,17 +54,29 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
 
     function addTask(): void {
         if (task && task.description && task.description.trim().length > 0) {
-            setTasks([...tasks, task])
-            setCount(count + 1)
-            setTask(taskInit)
 
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Tarefa adicionada com sucesso!',
-                showConfirmButton: false,
-                timer: 1500
+            http.post<Task>('/v1/tasks', {
+                description: task.description,
+                completed: task.completed
             })
+                .then(function (response) {
+                    setTasks([...tasks, response.data])
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Tarefa adicionada com sucesso!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTask(taskInit)
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'SERVER COMMUNICATION ERROR'
+                    })
+                });
         }
     }
 
@@ -115,7 +144,7 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
                                 label="Descrição da tarefa"
                                 variant="outlined"
                                 value={task?.description}
-                                onChange={event => setTask({ id: count, description: event.target.value })}
+                                onChange={event => setTask({ description: event.target.value, completed: false })}
                                 onKeyDown={event => event.key === 'Enter' ? addTask() : ''} />
                             <div id="emailHelp" className="form-text">Precione ENTER para adicionar uma tarefa na lista.</div>
                         </div>
