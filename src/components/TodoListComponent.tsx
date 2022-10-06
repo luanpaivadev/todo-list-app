@@ -31,6 +31,10 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
     const [task, setTask] = useState<Task>(taskInit)
 
     useEffect(() => {
+        findAll()
+    }, [])
+
+    function findAll() {
         http
             .get<Task[]>('/v1/tasks')
             .then(response => setTasks(response.data))
@@ -38,10 +42,10 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'SERVER COMMUNICATION ERROR'
+                    text: error.message
                 })
             })
-    }, [])
+    }
 
     function setDone(task: Task): void {
         if (!task.completed) {
@@ -52,23 +56,25 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
         setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
     }
 
-    function addTask(): void {
-        if (task && task.description && task.description.trim().length > 0) {
+    function addTask(task: Task): void {
+        if (task?.description && task.description.trim().length > 0) {
 
-            http.post<Task>('/v1/tasks', {
+            http.post('/v1/tasks', {
                 description: task.description,
                 completed: task.completed
             })
                 .then(function (response) {
-                    setTasks([...tasks, response.data])
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Tarefa adicionada com sucesso!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    setTask(taskInit)
+                    if (response.status === 201) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Tarefa adicionada com sucesso!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        findAll()
+                        setTask(taskInit)
+                    }
                 })
                 .catch(function (error) {
                     Swal.fire({
@@ -117,12 +123,24 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
             confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
-                setTasks(tasks.filter(t => t.id != task.id))
-                Swal.fire(
-                    'Deletado!',
-                    'Tarefa deletada com sucesso!',
-                    'success'
-                )
+                http.delete('/v1/tasks/' + task.id)
+                    .then(function (response) {
+                        if (response.status === 204) {
+                            Swal.fire(
+                                'Deletado!',
+                                'Tarefa deletada com sucesso!',
+                                'success'
+                            )
+                            findAll()
+                        }
+                    })
+                    .catch(function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: error.message
+                        })
+                    })
             }
         })
     }
@@ -145,7 +163,7 @@ const TodoListComponent: React.FC<TodoListComponentProps> = (props) => {
                                 variant="outlined"
                                 value={task?.description}
                                 onChange={event => setTask({ description: event.target.value, completed: false })}
-                                onKeyDown={event => event.key === 'Enter' ? addTask() : ''} />
+                                onKeyDown={event => event.key === 'Enter' ? addTask(task) : ''} />
                             <div id="emailHelp" className="form-text">Precione ENTER para adicionar uma tarefa na lista.</div>
                         </div>
                     </Box>
