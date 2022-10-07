@@ -1,27 +1,18 @@
 import { Task } from "./App";
 import { http } from "./utils/Axios";
 
-export function findAll(): Promise<Task[]> {
-    return http
-        .get<Task[]>('/v1/tasks')
-        .then(response => response.data)
+export async function findAll(): Promise<Task[]> {
+    const response = await http
+        .get<Task[]>('/v1/tasks');
+    return response.data;
 }
 
-export function saveTask(task: Task): Promise<Task | null> | null {
-
-    return http.post<Task>('/v1/tasks', {
+export async function saveTask(task: Task): Promise<Task> {
+    const response = await http.post<Task>('/v1/tasks', {
         description: task.description,
         completed: task.completed
-    })
-        .then(function (response) {
-            if (response.status === 201) {
-                return response.data
-            }
-            return null;
-        })
-        .catch(function (error) {
-            return null;
-        });
+    });
+    return response.data;
 }
 
 export function deleteSingleTask(task: Task) {

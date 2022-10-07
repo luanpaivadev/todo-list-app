@@ -28,11 +28,12 @@ function App() {
     setTasks(_tasks)
   }
 
-  function handleTaskSave() {
+  async function handleTaskSave() {
 
     if (task?.description && task.description.trim().length > 0) {
-      const _task = saveTask(task)
-      if (_task) {
+
+      try {
+        await saveTask(task)
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -42,12 +43,14 @@ function App() {
         })
         findAllTasks()
         setTask(useStateInit)
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'ERRO AO SALVAR TAREFA'
-        })
+      } catch (error) {
+        if (error instanceof Error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message
+          })
+        }
       }
     }
   }
@@ -114,11 +117,13 @@ function App() {
       )
       findAllTasks()
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'ERRO AO DELETAR TAREFA'
-      })
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message
+        })
+      }
     }
   }
 
