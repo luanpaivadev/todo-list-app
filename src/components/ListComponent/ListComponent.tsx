@@ -31,6 +31,7 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                 <div className='row align-items-center p-2'>
                                     <div className='col-10' onClick={() => props.done(task)}>
                                         <span className='align-middle'> <strong>#{task.id}</strong> - {task.description}</span>
+                                        {task.alarm && <div className="form-text">{`Alarm in ${task.alarm}`}</div>}
                                     </div>
                                     <div className='col-2 text-center'>
                                         {

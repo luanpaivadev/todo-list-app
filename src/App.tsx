@@ -1,7 +1,8 @@
+import { Dayjs } from "dayjs"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import './App.css'
-import { deleteSingleTask, findAll, saveTask } from "./App.service"
+import { deleteSingleTask, findAll, saveTask, updateTask } from "./App.service"
 import { ContainerComponent } from "./components/ContainerComponent/ContainerComponent"
 import { HeaderComponent } from "./components/HeaderComponent/HeaderComponent"
 import InputComponent from "./components/InputComponent/InputComponent"
@@ -10,6 +11,7 @@ import { ListComponent } from "./components/ListComponent/ListComponent"
 export interface Task {
   id?: number
   description: string
+  alarm?: string
   completed: boolean
 }
 
@@ -18,17 +20,56 @@ function App() {
   const useStateInit: Task = { description: '', completed: false }
   const [task, setTask] = useState(useStateInit)
   const [tasks, setTasks] = useState<Task[]>([])
+  const [checked, setChecked] = useState(false);
+  const [alarm, setAlarm] = useState<Dayjs | null>(null);
+  const sound = require('./static/alarm.mp3')
 
   useEffect(() => {
     findAllTasks()
   }, [])
 
   async function findAllTasks() {
-    const _tasks = await findAll()
-    setTasks(_tasks)
+
+    try {
+      const _tasks = await findAll()
+      setTasks(_tasks)
+
+      const taskList = _tasks.filter(task => task.alarm != null && task.alarm.length > 0)
+      taskList.forEach(alarmIn)
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro de comunicação com o banco de dados.'
+        })
+      }
+    }
   }
 
-  async function handleTaskSave() {
+  function alarmIn(task: Task) {
+
+    const alarmIn = task.alarm
+
+    const interval = setInterval(() => {
+      const date = new Date()
+      const currentTime = `${date.getHours()}:${date.getMinutes()}`
+      if (currentTime == alarmIn) {
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          title: task.description,
+          showConfirmButton: false,
+          timer: 5000
+        })
+        const audio = new Audio(sound)
+        audio.play()
+        clearInterval(interval)
+      }
+    }, 1000)
+
+  }
+
+  async function handleTaskSave(task: Task) {
 
     if (task?.description && task.description.trim().length > 0) {
 
@@ -41,8 +82,12 @@ function App() {
           showConfirmButton: false,
           timer: 1500
         })
+
         findAllTasks()
         setTask(useStateInit)
+        setChecked(false)
+        setAlarm(null)
+
       } catch (error) {
         if (error instanceof Error) {
           Swal.fire({
@@ -55,13 +100,28 @@ function App() {
     }
   }
 
-  function setDone(task: Task): void {
-    if (!task.completed) {
-      task.completed = true
-    } else {
-      task.completed = false
+  async function handleTaskDone(task: Task) {
+
+    try {
+
+      if (!task.completed) {
+        task.completed = true
+      } else {
+        task.completed = false
+      }
+
+      await updateTask(task)
+      findAllTasks()
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message
+        })
+      }
     }
-    setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
+
   }
 
   async function handleTaskUpdate(task: Task) {
@@ -79,6 +139,7 @@ function App() {
 
     if (text) {
       task.description = text
+      await updateTask(task)
       setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
       Swal.fire({
         position: 'center',
@@ -136,11 +197,15 @@ function App() {
         <InputComponent
           task={task}
           setTask={setTask}
-          save={handleTaskSave} />
+          save={handleTaskSave}
+          checked={checked}
+          setChecked={setChecked}
+          alarm={alarm}
+          setAlarm={setAlarm} />
 
         <ListComponent
           taskList={tasks}
-          done={setDone}
+          done={handleTaskDone}
           update={handleTaskUpdate}
           delete={handleTaskDelete} />
 

@@ -10,7 +10,17 @@ export async function findAll(): Promise<Task[]> {
 export async function saveTask(task: Task): Promise<Task> {
     const response = await http.post<Task>('/v1/tasks', {
         description: task.description,
-        completed: task.completed
+        completed: task.completed,
+        alarm: task.alarm
+    });
+    return response.data;
+}
+
+export async function updateTask(task: Task): Promise<Task> {
+    const response = await http.put<Task>('/v1/tasks/' + task.id, {
+        description: task.description,
+        completed: task.completed,
+        alarm: task.alarm
     });
     return response.data;
 }
