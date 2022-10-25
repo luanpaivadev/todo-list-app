@@ -54,15 +54,22 @@ function App() {
       const date = new Date()
       const currentTime = `${date.getHours()}:${date.getMinutes()}`
       if (currentTime == alarmIn) {
-        Swal.fire({
-          position: 'center',
-          icon: 'info',
-          title: task.description,
-          showConfirmButton: false,
-          timer: 5000
-        })
+
         const audio = new Audio(sound)
         audio.play()
+        audio.loop = true
+
+        Swal.fire({
+          title: task.description,
+          icon: 'info',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            audio.loop = false
+            audio.pause()
+          }
+        })
         clearInterval(interval)
       }
     }, 1000)
@@ -111,7 +118,7 @@ function App() {
       }
 
       await updateTask(task)
-      findAllTasks()
+      setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
     } catch (error) {
       if (error instanceof Error) {
         Swal.fire({
