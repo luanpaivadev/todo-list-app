@@ -1,12 +1,11 @@
 import { Dayjs } from "dayjs"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import { deleteSingleTask, findAll, saveTask, updateTask } from "../App.service"
 import { ContainerComponent } from "../components/ContainerComponent/ContainerComponent"
-import { Title } from "../components/shared/Title"
 import InputComponent from "../components/InputComponent/InputComponent"
 import { ListComponent } from "../components/ListComponent/ListComponent"
-import React from "react"
+import Title from "../components/shared/Title"
 
 export interface Task {
     id?: number

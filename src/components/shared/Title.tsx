@@ -4,7 +4,7 @@ declare interface TitleProps {
     marginBotton?: string
 }
 
-export const Title: React.FC<TitleProps> = (props) => {
+const Title: React.FC<TitleProps> = (props) => {
     return (
         <div>
             <h2 className={`text-center mt-${props.marginTop} mb-${props.marginBotton}`}>
@@ -13,3 +13,5 @@ export const Title: React.FC<TitleProps> = (props) => {
         </div>
     )
 }
+
+export default Title

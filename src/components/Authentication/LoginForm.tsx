@@ -1,6 +1,6 @@
 import Button from "../shared/Button"
 import Input from "../shared/Input"
-import { Title } from "../shared/Title"
+import Title from "../shared/Title"
 
 const LoginForm = () => {
     return (
