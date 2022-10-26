@@ -1,5 +1,5 @@
 import List from "@mui/material/List";
-import { Task } from "../../App";
+import { Task } from "../../views/HomeView";
 
 declare interface ListComponentProps {
     taskList: Task[],

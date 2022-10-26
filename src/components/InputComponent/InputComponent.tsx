@@ -9,7 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { Dayjs } from 'dayjs';
 import { Dispatch, SetStateAction } from "react";
-import { Task } from "../../App";
+import { Task } from "../../views/HomeView";
 
 interface InputComponentProps {
     task: Task
