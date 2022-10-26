@@ -1,6 +1,6 @@
-import { Title } from "../shared/Title"
 import Button from "../shared/Button"
 import Input from "../shared/Input"
+import { Title } from "../shared/Title"
 
 const LoginForm = () => {
     return (
@@ -10,9 +10,7 @@ const LoginForm = () => {
             padding: 50
         }}>
             <form>
-                
                 <Title text="Login" />
-
                 <Input
                     type="email"
                     className="form-control form-control-lg"
@@ -30,7 +28,6 @@ const LoginForm = () => {
                     className="btn btn-lg btn-primary"
                     text="Login"
                 />
-
                 <div className="form-text text-center">v1.0.0-Alpha</div>
             </form>
         </div>

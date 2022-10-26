@@ -2,10 +2,11 @@ import { Dayjs } from "dayjs"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import { deleteSingleTask, findAll, saveTask, updateTask } from "../App.service"
-import { Container } from "../components/shared/Container"
+import { ContainerComponent } from "../components/ContainerComponent/ContainerComponent"
 import { Title } from "../components/shared/Title"
 import InputComponent from "../components/InputComponent/InputComponent"
 import { ListComponent } from "../components/ListComponent/ListComponent"
+import React from "react"
 
 export interface Task {
     id?: number
@@ -195,26 +196,41 @@ const HomeView = () => {
     }
 
     return (
-        <Container>
 
-            <Title text='LISTA DE TAREFAS' />
+        <React.Fragment>
 
-            <InputComponent
-                task={task}
-                setTask={setTask}
-                save={handleTaskSave}
-                checked={checked}
-                setChecked={setChecked}
-                alarm={alarm}
-                setAlarm={setAlarm} />
+            <div style={{
+                width: '100%',
+                height: 250,
+                backgroundColor: '#2c2c2c'
+            }} />
 
-            <ListComponent
-                taskList={tasks}
-                done={handleTaskDone}
-                update={handleTaskUpdate}
-                delete={handleTaskDelete} />
+            <ContainerComponent>
 
-        </Container>
+                <Title
+                    text='LISTA DE TAREFAS'
+                    marginTop="4"
+                    marginBotton="4"
+                />
+
+                <InputComponent
+                    task={task}
+                    setTask={setTask}
+                    save={handleTaskSave}
+                    checked={checked}
+                    setChecked={setChecked}
+                    alarm={alarm}
+                    setAlarm={setAlarm} />
+
+                <ListComponent
+                    taskList={tasks}
+                    done={handleTaskDone}
+                    update={handleTaskUpdate}
+                    delete={handleTaskDelete} />
+
+            </ContainerComponent>
+        </React.Fragment>
+
     )
 }
 

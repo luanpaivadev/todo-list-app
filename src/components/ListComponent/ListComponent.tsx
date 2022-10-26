@@ -20,7 +20,7 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                 bgcolor: 'background.paper',
                 position: 'relative',
                 overflow: 'auto',
-                maxHeight: 500,
+                maxHeight: 480,
                 '& ul': { padding: 0 },
             }}>
             <ul className='list-group'>

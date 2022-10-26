@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 import { Dayjs } from 'dayjs';
 import { Dispatch, SetStateAction } from "react";
 import { Task } from "../../views/HomeView";
@@ -41,7 +42,7 @@ const InputComponent: React.FC<InputComponentProps> = (props) => {
                             value={props.task.description}
                             onChange={event => props.setTask({ description: event.target.value, completed: false })}
                             onKeyDown={event => event.key === 'Enter' ? props.save(props.task) : ''} />
-                        <div id="emailHelp" className="form-text">Precione ENTER para adicionar uma tarefa na lista.</div>
+                        <div id="emailHelp" className="form-text mb-3">Precione ENTER para adicionar uma tarefa na lista.</div>
 
                         <Stack spacing={2}>
                             <FormGroup>
@@ -69,6 +70,7 @@ const InputComponent: React.FC<InputComponentProps> = (props) => {
                                     renderInput={(params) => <TextField {...params} />}
                                 />
                             </LocalizationProvider>
+
                         </Stack>
                     </div>
                 </Box>
