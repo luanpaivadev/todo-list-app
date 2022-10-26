@@ -2,8 +2,8 @@ import { Dayjs } from "dayjs"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import { deleteSingleTask, findAll, saveTask, updateTask } from "../App.service"
-import { ContainerComponent } from "../components/ContainerComponent/ContainerComponent"
-import { HeaderComponent } from "../components/HeaderComponent/HeaderComponent"
+import { Container } from "../components/shared/Container"
+import { Title } from "../components/shared/Title"
 import InputComponent from "../components/InputComponent/InputComponent"
 import { ListComponent } from "../components/ListComponent/ListComponent"
 
@@ -195,9 +195,9 @@ const HomeView = () => {
     }
 
     return (
-        <ContainerComponent>
+        <Container>
 
-            <HeaderComponent title='LISTA DE TAREFAS' />
+            <Title text='LISTA DE TAREFAS' />
 
             <InputComponent
                 task={task}
@@ -214,7 +214,7 @@ const HomeView = () => {
                 update={handleTaskUpdate}
                 delete={handleTaskDelete} />
 
-        </ContainerComponent>
+        </Container>
     )
 }
 
