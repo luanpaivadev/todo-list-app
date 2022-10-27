@@ -1,22 +1,33 @@
+import CssBaseline from '@mui/material/CssBaseline';
+import createTheme from '@mui/material/styles/createTheme';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
 import HomeView from "./views/HomeView";
 import LoginView from './views/LoginView';
 import NotFoundView from './views/NotFoundView';
 
 function App() {
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path='/'      element={<HomeView />} />
-          <Route path='/login' element={<LoginView />} />
-          <Route path='/home'  element={<HomeView />} />
-          <Route path='*'      element={<NotFoundView />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<HomeView />} />
+            <Route path='/login' element={<LoginView />} />
+            <Route path='/home' element={<HomeView />} />
+            <Route path='*' element={<NotFoundView />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </ThemeProvider>
   )
 }
 

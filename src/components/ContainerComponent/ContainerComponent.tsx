@@ -1,6 +1,8 @@
 export const ContainerComponent: React.FC<{ children: JSX.Element | JSX.Element[] }> = (props) => {
     return (
-        <div className='container-sm shadow mb-5 mt-4 p-3 bg-body rounded' style={{
+        <div className='container-sm shadow mt-1 p-4 rounded' style={{
+            color: '#FFF',
+            backgroundColor: '#2A2A2B',
             position: 'absolute',
             top: 50,
             left: 0,

@@ -198,12 +198,6 @@ const HomeView = () => {
 
         <React.Fragment>
 
-            <div style={{
-                width: '100%',
-                height: 250,
-                backgroundColor: '#2c2c2c'
-            }} />
-
             <ContainerComponent>
 
                 <Title
@@ -228,6 +222,7 @@ const HomeView = () => {
                     delete={handleTaskDelete} />
 
             </ContainerComponent>
+            
         </React.Fragment>
 
     )
