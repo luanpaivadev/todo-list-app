@@ -1,3 +1,4 @@
+import Container from "@mui/material/Container"
 import { Dayjs } from "dayjs"
 import React, { useEffect, useState } from "react"
 import Swal from "sweetalert2"
@@ -196,34 +197,32 @@ const HomeView = () => {
 
     return (
 
-        <React.Fragment>
+        <Container sx={{
+            backgroundColor: '#2A2A2B',
+            padding: 3,
+            mt: 10
+        }} maxWidth="md">
+            <Title
+                text='LISTA DE TAREFAS'
+                marginTop="4"
+                marginBotton="4"
+            />
 
-            <ContainerComponent>
+            <InputComponent
+                task={task}
+                setTask={setTask}
+                save={handleTaskSave}
+                checked={checked}
+                setChecked={setChecked}
+                alarm={alarm}
+                setAlarm={setAlarm} />
 
-                <Title
-                    text='LISTA DE TAREFAS'
-                    marginTop="4"
-                    marginBotton="4"
-                />
-
-                <InputComponent
-                    task={task}
-                    setTask={setTask}
-                    save={handleTaskSave}
-                    checked={checked}
-                    setChecked={setChecked}
-                    alarm={alarm}
-                    setAlarm={setAlarm} />
-
-                <ListComponent
-                    taskList={tasks}
-                    done={handleTaskDone}
-                    update={handleTaskUpdate}
-                    delete={handleTaskDelete} />
-
-            </ContainerComponent>
-            
-        </React.Fragment>
+            <ListComponent
+                taskList={tasks}
+                done={handleTaskDone}
+                update={handleTaskUpdate}
+                delete={handleTaskDelete} />
+        </Container>
 
     )
 }
