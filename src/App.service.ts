@@ -1,4 +1,4 @@
-import { Task } from "./views/HomeView";
+import { Task } from "./components/views/HomeView";
 import { http } from "./utils/Axios";
 
 export async function findAll(): Promise<Task[]> {

@@ -2,9 +2,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import createTheme from '@mui/material/styles/createTheme';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomeView from "./views/HomeView";
-import LoginView from './views/LoginView';
-import NotFoundView from './views/NotFoundView';
+import HomeView from './components/views/HomeView';
+import LoginView from './components/views/LoginView';
+import NotFoundView from './components/views/NotFoundView';
 
 function App() {
 

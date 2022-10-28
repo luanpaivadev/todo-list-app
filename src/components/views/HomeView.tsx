@@ -1,11 +1,11 @@
 import { Dayjs } from "dayjs"
 import React, { useEffect, useState } from "react"
 import Swal from "sweetalert2"
-import { deleteSingleTask, findAll, saveTask, updateTask } from "../App.service"
-import { ContainerComponent } from "../components/ContainerComponent/ContainerComponent"
-import InputComponent from "../components/InputComponent/InputComponent"
-import { ListComponent } from "../components/ListComponent/ListComponent"
-import Title from "../components/shared/Title"
+import { deleteSingleTask, findAll, saveTask, updateTask } from "../../App.service"
+import { ContainerComponent } from "../ContainerComponent/ContainerComponent"
+import InputComponent from "../InputComponent/InputComponent"
+import { ListComponent } from "../ListComponent/ListComponent"
+import Title from "../shared/Title"
 
 export interface Task {
     id?: number
@@ -21,7 +21,7 @@ const HomeView = () => {
     const [tasks, setTasks] = useState<Task[]>([])
     const [checked, setChecked] = useState(false);
     const [alarm, setAlarm] = useState<Dayjs | null>(null);
-    const sound = require('../static/alarm.mp3')
+    const sound = require('../../static/alarm.mp3')
 
     useEffect(() => {
         findAllTasks()

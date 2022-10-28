@@ -6,7 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Task } from "../../views/HomeView";
+import { Task } from "../views/HomeView";
 
 declare interface ListComponentProps {
     taskList: Task[],
@@ -37,7 +37,7 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                 <ListItemButton>
 
                                     <ListItemText sx={{ textAlign: 'justify', mr: 4 }}
-                                        primaryTypographyProps={{ fontSize: 18, }}
+                                        primaryTypographyProps={{ fontSize: 18 }}
                                         primary={`#${task.id} - ${task.description}`}
                                         onClick={() => props.done(task)} />
 

@@ -1,36 +1,92 @@
-import Button from "../shared/Button"
-import Input from "../shared/Input"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Container from "@mui/material/Container"
+import TextField from "@mui/material/TextField"
+import axios from "axios"
+import { useState } from "react"
 import Title from "../shared/Title"
 
+interface User {
+    username: string
+    password: string
+}
+
 const LoginForm = () => {
+
+    const userInit: User = { username: '', password: '' }
+    const [user, setUser] = useState(userInit)
+
+    function handleUser(event: React.ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target
+        setUser({
+            ...user,
+            [name]: value
+        })
+    }
+
+    function login() {
+
+        console.log(user)
+
+        axios({
+            method: 'post',
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            url: 'http://localhost:8081/v1/login',
+            data: JSON.stringify(user)
+        }).then(response => {
+            console.log(response.data)
+        }).catch(error => {
+            if (error instanceof Error) {
+                console.log(error.message)
+            }
+        })
+
+    }
+
     return (
-        <div className="container" style={{
-            width: 600,
-            backgroundColor: '#FFF',
-            padding: 50
-        }}>
-            <form>
+
+        <Container maxWidth="sm">
+
+            <Box sx={{
+                backgroundColor: '#2A2A2B',
+                padding: 3,
+                mt: 10
+            }} component='form'>
+
                 <Title text="Login" />
-                <Input
-                    type="email"
-                    className="form-control form-control-lg"
-                    id="email"
-                    placeholder="E-mail"
+
+                <TextField sx={{
+                    width: '100%',
+                    mt: 3
+                }}
+                    id="outlined-basic"
+                    label="E-mail"
+                    variant="outlined"
+                    name="username"
+                    onChange={handleUser}
                 />
-                <Input
+
+                <TextField sx={{
+                    width: '100%',
+                    mt: 3
+                }}
+                    id="outlined-password-input"
+                    label="Password"
                     type="password"
-                    className="form-control form-control-lg"
-                    id="password"
-                    placeholder="Password"
-                />
-                <Button
-                    type="submit"
-                    className="btn btn-lg btn-primary"
-                    text="Login"
-                />
-                <div className="form-text text-center">v1.0.0-Alpha</div>
-            </form>
-        </div>
+                    name="password"
+                    onChange={handleUser} />
+
+                <Button sx={{
+                    width: '100%',
+                    height: 50,
+                    mt: 3
+                }} variant="contained" onClick={login}>Login</Button>
+
+                <div className="form-text text-center mt-3">v1.0.0-Alpha</div>
+            </Box>
+            
+        </Container>
+
     )
 }
 

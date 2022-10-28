@@ -10,7 +10,7 @@ import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 import { Dayjs } from 'dayjs';
 import { Dispatch, SetStateAction } from "react";
-import { Task } from "../../views/HomeView";
+import { Task } from "../views/HomeView";
 
 interface InputComponentProps {
     task: Task
