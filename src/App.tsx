@@ -20,7 +20,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<HomeView />} />
+            <Route path='/' element={<LoginView />} />
             <Route path='/login' element={<LoginView />} />
             <Route path='/home' element={<HomeView />} />
             <Route path='*' element={<NotFoundView />} />

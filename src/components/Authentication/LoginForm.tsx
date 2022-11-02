@@ -32,7 +32,7 @@ const LoginForm = () => {
             method: 'post',
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             url: 'http://localhost:8081/v1/login',
-            data: JSON.stringify(user)
+            params: user
         }).then(response => {
             console.log(response.data)
         }).catch(error => {

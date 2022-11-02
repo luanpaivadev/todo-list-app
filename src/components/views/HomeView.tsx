@@ -1,9 +1,10 @@
+import Backdrop from "@mui/material/Backdrop"
+import CircularProgress from "@mui/material/CircularProgress"
 import Container from "@mui/material/Container"
 import { Dayjs } from "dayjs"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import { deleteSingleTask, findAll, saveTask, updateTask } from "../../App.service"
-import { ContainerComponent } from "../ContainerComponent/ContainerComponent"
 import InputComponent from "../InputComponent/InputComponent"
 import { ListComponent } from "../ListComponent/ListComponent"
 import Title from "../shared/Title"
@@ -17,6 +18,7 @@ export interface Task {
 
 const HomeView = () => {
 
+    const [open, setOpen] = useState(false);
     const useStateInit: Task = { description: '', completed: false }
     const [task, setTask] = useState(useStateInit)
     const [tasks, setTasks] = useState<Task[]>([])
@@ -27,8 +29,14 @@ const HomeView = () => {
     useEffect(() => {
         findAllTasks()
     }, [])
-
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+    
     async function findAllTasks() {
+
+        setOpen(!open);
 
         try {
             const _tasks = await findAll()
@@ -36,12 +44,14 @@ const HomeView = () => {
 
             const taskList = _tasks.filter(task => task.alarm != null && task.alarm.length > 0)
             taskList.forEach(alarmIn)
+            setOpen(false);
         } catch (error) {
             if (error instanceof Error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro de comunicação com o banco de dados.'
                 })
+                setOpen(false);
             }
         }
     }
@@ -222,6 +232,15 @@ const HomeView = () => {
                 done={handleTaskDone}
                 update={handleTaskUpdate}
                 delete={handleTaskDelete} />
+
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={open}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
         </Container>
 
     )

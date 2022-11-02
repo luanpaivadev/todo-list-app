@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -7,9 +8,8 @@ import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
-import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
 import { Dayjs } from 'dayjs';
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Task } from "../views/HomeView";
 
 interface InputComponentProps {
@@ -31,50 +31,62 @@ const InputComponent: React.FC<InputComponentProps> = (props) => {
     return (
         <div className='row mb-3'>
             <div className='col align-self-center'>
-                <Box>
-                    <div className="mb-3">
-                        <TextField sx={{
-                            width: '100%'
-                        }}
-                            id="outlined-basic"
-                            label="Descrição da tarefa"
-                            variant="outlined"
-                            value={props.task.description}
-                            onChange={event => props.setTask({ description: event.target.value, completed: false })}
-                            onKeyDown={event => event.key === 'Enter' ? props.save(props.task) : ''} />
-                        <div id="emailHelp" className="form-text mb-3">Precione ENTER para adicionar uma tarefa na lista.</div>
+                <Box sx={{
+                    // backgroundColor: 'red'
+                    mb: 1
+                }}>
+                    <TextField sx={{
+                        width: '100%'
+                    }}
+                        id="outlined-basic"
+                        label="Descrição da tarefa"
+                        variant="outlined"
+                        value={props.task.description}
+                        onChange={event => props.setTask({ description: event.target.value, completed: false })} />
+                    <div id="emailHelp" className="form-text mb-3">Precione ENTER para adicionar uma tarefa na lista.</div>
 
-                        <Stack spacing={2}>
-                            <FormGroup>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={props.checked}
-                                            onChange={handleChange}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                        />}
-                                    label="Ativar alarme?"
-                                />
-                            </FormGroup>
+                    <Stack spacing={2}>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={props.checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />}
+                                label="Ativar alarme?"
+                            />
+                        </FormGroup>
 
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <MobileTimePicker
-                                    label="Alarme"
-                                    disabled={props.checked ? false : true}
-                                    value={props.alarm}
-                                    ampm={false}
-                                    onChange={(newValue) => {
-                                        props.setAlarm(newValue)
-                                        props.checked && props.setTask({ ...props.task, alarm: newValue?.hour() + ':' + newValue?.minute() })
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </LocalizationProvider>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <MobileTimePicker
+                                label="Alarme"
+                                disabled={props.checked ? false : true}
+                                value={props.alarm}
+                                ampm={false}
+                                onChange={(newValue) => {
+                                    props.setAlarm(newValue)
+                                    props.checked && props.setTask({ ...props.task, alarm: newValue?.hour() + ':' + newValue?.minute() })
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
 
-                        </Stack>
-                    </div>
+                        <Button
+                            disabled={props.task.description == '' ? true : false}
+                            variant="contained"
+                            size="large"
+                            onClick={() => props.save(props.task)}
+                            sx={{
+                                height: 50
+                            }}>
+                            Salvar tarefa
+                        </Button>
+
+                    </Stack>
                 </Box>
             </div>
+
         </div>
     );
 }

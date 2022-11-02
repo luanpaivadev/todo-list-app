@@ -1,11 +1,13 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from "@mui/material/Divider";
+import Grid from '@mui/material/Grid';
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import { Container } from '@mui/system';
 import { Task } from "../views/HomeView";
 
 declare interface ListComponentProps {
@@ -23,7 +25,7 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
 
         <List sx={{
             width: '100%',
-            maxHeight: 480,
+            maxHeight: 460,
             position: 'relative',
             overflow: 'auto',
             '& ul': { padding: 0 },
@@ -36,18 +38,33 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
 
                                 <ListItemButton>
 
-                                    <ListItemText sx={{ textAlign: 'justify', mr: 4 }}
-                                        primaryTypographyProps={{ fontSize: 18 }}
-                                        primary={`#${task.id} - ${task.description}`}
-                                        onClick={() => props.done(task)} />
-
-                                    <ListItemIcon>
-                                        {
-                                            !task.completed
-                                                ? <EditIcon onClick={() => props.update(task)} />
-                                                : <DeleteIcon onClick={() => props.delete(task)} />
-                                        }
-                                    </ListItemIcon>
+                                    <Grid container>
+                                        <Grid item xs={11}>
+                                            <div onClick={() => props.done(task)}>
+                                                <ListItemText sx={{ textAlign: 'justify', mr: 4 }}
+                                                    primaryTypographyProps={{ fontSize: 18 }}
+                                                    primary={`#${task.id} - ${task.description}`} />
+                                                <Grid item>
+                                                    {
+                                                        task.alarm && <small>{`Alarm in ${task.alarm}`}</small>
+                                                    }
+                                                </Grid>
+                                            </div>
+                                        </Grid>
+                                        <Grid item xs={1}
+                                            container
+                                            direction="row"
+                                            justifyContent="center"
+                                            alignItems="center">
+                                            <ListItemIcon>
+                                                {
+                                                    !task.completed
+                                                        ? <EditIcon onClick={() => props.update(task)} />
+                                                        : <DeleteIcon onClick={() => props.delete(task)} />
+                                                }
+                                            </ListItemIcon>
+                                        </Grid>
+                                    </Grid>
 
                                 </ListItemButton>
 
