@@ -29,11 +29,11 @@ const HomeView = () => {
     useEffect(() => {
         findAllTasks()
     }, [])
-    
+
     const handleClose = () => {
         setOpen(false);
     };
-    
+
     async function findAllTasks() {
 
         setOpen(!open);
@@ -88,6 +88,8 @@ const HomeView = () => {
 
     async function handleTaskSave(task: Task) {
 
+        setOpen(!open);
+
         if (task?.description && task.description.trim().length > 0) {
 
             try {
@@ -104,15 +106,16 @@ const HomeView = () => {
                 setTask(useStateInit)
                 setChecked(false)
                 setAlarm(null)
+                setOpen(false);
 
             } catch (error) {
                 if (error instanceof Error) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
-                        text: error.message
+                        title: 'Erro de comunicação com o banco de dados.'
                     })
                 }
+                setOpen(false);
             }
         }
     }
