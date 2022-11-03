@@ -25,7 +25,7 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
 
         <List sx={{
             width: '100%',
-            maxHeight: 460,
+            maxHeight: 360,
             position: 'relative',
             overflow: 'auto',
             '& ul': { padding: 0 },
@@ -42,7 +42,6 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                         <Grid item xs={11}>
                                             <div onClick={() => props.done(task)}>
                                                 <ListItemText sx={{ textAlign: 'justify', mr: 4 }}
-                                                    primaryTypographyProps={{ fontSize: 18 }}
                                                     primary={`#${task.id} - ${task.description}`} />
                                                 <Grid item>
                                                     {

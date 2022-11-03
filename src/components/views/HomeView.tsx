@@ -1,4 +1,5 @@
 import Backdrop from "@mui/material/Backdrop"
+import Box from "@mui/material/Box"
 import CircularProgress from "@mui/material/CircularProgress"
 import Container from "@mui/material/Container"
 import { Dayjs } from "dayjs"
@@ -210,39 +211,43 @@ const HomeView = () => {
 
     return (
 
-        <Container sx={{
-            backgroundColor: '#2A2A2B',
-            padding: 3,
-            mt: 10
-        }} maxWidth="md">
-            <Title
-                text='LISTA DE TAREFAS'
-                marginTop="4"
-                marginBotton="4"
-            />
+        <Container maxWidth="md">
 
-            <InputComponent
-                task={task}
-                setTask={setTask}
-                save={handleTaskSave}
-                checked={checked}
-                setChecked={setChecked}
-                alarm={alarm}
-                setAlarm={setAlarm} />
+            <Box sx={{
+                backgroundColor: '#2A2A2B',
+                padding: 3,
+                mt: 2
+            }}>
 
-            <ListComponent
-                taskList={tasks}
-                done={handleTaskDone}
-                update={handleTaskUpdate}
-                delete={handleTaskDelete} />
+                <Title
+                    text='LISTA DE TAREFAS'
+                    marginTop="4"
+                    marginBotton="4"
+                />
 
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={open}
-                onClick={handleClose}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+                <InputComponent
+                    task={task}
+                    setTask={setTask}
+                    save={handleTaskSave}
+                    checked={checked}
+                    setChecked={setChecked}
+                    alarm={alarm}
+                    setAlarm={setAlarm} />
+
+                <ListComponent
+                    taskList={tasks}
+                    done={handleTaskDone}
+                    update={handleTaskUpdate}
+                    delete={handleTaskDelete} />
+
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={open}
+                    onClick={handleClose}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+
+            </Box>
 
         </Container>
 

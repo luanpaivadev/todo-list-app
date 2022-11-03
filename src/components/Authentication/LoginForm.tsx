@@ -5,12 +5,15 @@ import CircularProgress from "@mui/material/CircularProgress"
 import Container from "@mui/material/Container"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
-import axios from "axios"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
+import { loginApp } from "../../App.service"
+import { http } from "../../utils/Axios"
+import Message from "../shared/Message"
 import Title from "../shared/Title"
 
-interface User {
+export interface User {
     username: string
     password: string
 }
@@ -21,6 +24,7 @@ const LoginForm = () => {
     const userInit: User = { username: '', password: '' }
     const [user, setUser] = useState(userInit)
     const [alert, setAlert] = useState('')
+    const navigate = useNavigate()
 
     function handleUser(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target
@@ -34,24 +38,21 @@ const LoginForm = () => {
         setOpen(false);
     };
 
-    function login() {
+    async function login() {
 
         setOpen(!open);
 
-        axios({
-            method: 'post',
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            url: 'http://localhost:8081/v1/login',
-            params: user
-        }).then(response => {
+        try {
+            const response = await loginApp(user)
             const token = response.data.access_token
             if (token == null) {
                 setAlert('Usuário ou senha inválidos')
+                return
             }
-            console.log(token)
-            setAlert('')
+            sessionStorage.setItem('access_token', token)
             setOpen(false);
-        }).catch(error => {
+            navigate('/home')
+        } catch (error: any) {
             if (error.response) {
                 if (error.response.data.includes('User not found')) {
                     setAlert('Usuário ou senha inválidos.')
@@ -63,7 +64,7 @@ const LoginForm = () => {
                 })
             }
             setOpen(false);
-        })
+        }
 
     }
 
@@ -82,11 +83,8 @@ const LoginForm = () => {
                     <Title text="Login" />
 
                     {
-                        // CRIAR COMPONENTE DE MENSAGEM
                         alert.length != 0 &&
-                        <div className="form-text text-center mt-3" style={{
-                            color: 'red'
-                        }}>{alert}</div>
+                            <Message text={alert} />
                     }
 
                     <TextField sx={{

@@ -1,9 +1,9 @@
 import LoginForm from "../Authentication/LoginForm"
 
-const Login = () => {
+const LoginView = () => {
     return (
         <LoginForm />
     )
 }
 
-export default Login
+export default LoginView

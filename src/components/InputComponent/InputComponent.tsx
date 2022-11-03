@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { Dayjs } from 'dayjs';
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Task } from "../views/HomeView";
 
 interface InputComponentProps {
@@ -31,21 +31,18 @@ const InputComponent: React.FC<InputComponentProps> = (props) => {
     return (
         <div className='row mb-3'>
             <div className='col align-self-center'>
-                <Box sx={{
-                    // backgroundColor: 'red'
-                    mb: 1
-                }}>
-                    <TextField sx={{
-                        width: '100%'
-                    }}
-                        id="outlined-basic"
-                        label="Descrição da tarefa"
-                        variant="outlined"
-                        value={props.task.description}
-                        onChange={event => props.setTask({ description: event.target.value, completed: false })} />
-                    <div id="emailHelp" className="form-text mb-3">Precione ENTER para adicionar uma tarefa na lista.</div>
-
+                <Box>
                     <Stack spacing={2}>
+
+                        <TextField sx={{
+                            width: '100%'
+                        }}
+                            id="outlined-basic"
+                            label="Descrição da tarefa"
+                            variant="outlined"
+                            value={props.task.description}
+                            onChange={event => props.setTask({ description: event.target.value, completed: false })} />
+
                         <FormGroup>
                             <FormControlLabel
                                 control={
