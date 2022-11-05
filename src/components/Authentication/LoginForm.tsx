@@ -5,11 +5,10 @@ import CircularProgress from "@mui/material/CircularProgress"
 import Container from "@mui/material/Container"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { loginApp } from "../../App.service"
-import { http } from "../../utils/Axios"
 import Message from "../shared/Message"
 import Title from "../shared/Title"
 
@@ -25,6 +24,10 @@ const LoginForm = () => {
     const [user, setUser] = useState(userInit)
     const [alert, setAlert] = useState('')
     const navigate = useNavigate()
+
+    useEffect(() => {
+        sessionStorage.removeItem('access_token')
+    }, [])
 
     function handleUser(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target
@@ -84,7 +87,7 @@ const LoginForm = () => {
 
                     {
                         alert.length != 0 &&
-                            <Message text={alert} />
+                        <Message text={alert} />
                     }
 
                     <TextField sx={{

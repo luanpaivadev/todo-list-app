@@ -4,8 +4,9 @@ import CircularProgress from "@mui/material/CircularProgress"
 import Container from "@mui/material/Container"
 import { Dayjs } from "dayjs"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
-import { deleteSingleTask, findAll, saveTask, updateTask } from "../../App.service"
+import { deleteSingleTask, findAll, saveTask, updateTask, validateTokenApi } from "../../App.service"
 import InputComponent from "../InputComponent/InputComponent"
 import { ListComponent } from "../ListComponent/ListComponent"
 import Title from "../shared/Title"
@@ -26,6 +27,7 @@ const HomeView = () => {
     const [checked, setChecked] = useState(false);
     const [alarm, setAlarm] = useState<Dayjs | null>(null);
     const sound = require('../../static/alarm.mp3')
+    const navigate = useNavigate()
 
     useEffect(() => {
         findAllTasks()
@@ -35,9 +37,38 @@ const HomeView = () => {
         setOpen(false);
     };
 
+    async function validateToken() {
+
+        try {
+
+            const token: string | null = sessionStorage.getItem("access_token");
+
+            if (token != null) {
+
+                const response = await validateTokenApi(token);
+                const active = response.data
+
+                if (active) {
+                    navigate('/home')
+                    return
+                }
+                navigate('/login');
+            }
+            navigate('/login');
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro de comunicação com o banco de dados.'
+            })
+            navigate('/login');
+        }
+
+    }
+
     async function findAllTasks() {
 
         setOpen(!open);
+        validateToken()
 
         try {
             const _tasks = await findAll()
@@ -46,14 +77,13 @@ const HomeView = () => {
             const taskList = _tasks.filter(task => task.alarm != null && task.alarm.length > 0)
             taskList.forEach(alarmIn)
             setOpen(false);
-        } catch (error) {
-            if (error instanceof Error) {
+        } catch (error: any) {
+            error.response.status != 401 &&
                 Swal.fire({
                     icon: 'error',
                     title: 'Erro de comunicação com o banco de dados.'
                 })
-                setOpen(false);
-            }
+            setOpen(false);
         }
     }
 
@@ -89,11 +119,12 @@ const HomeView = () => {
 
     async function handleTaskSave(task: Task) {
 
-        setOpen(!open);
+        validateToken()
 
         if (task?.description && task.description.trim().length > 0) {
 
             try {
+                setOpen(!open);
                 await saveTask(task)
                 Swal.fire({
                     position: 'center',
@@ -109,13 +140,11 @@ const HomeView = () => {
                 setAlarm(null)
                 setOpen(false);
 
-            } catch (error) {
-                if (error instanceof Error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro de comunicação com o banco de dados.'
-                    })
-                }
+            } catch (error: any) {
+                Swal.fire({
+                    icon: 'error',
+                    title: error.message
+                })
                 setOpen(false);
             }
         }
@@ -123,7 +152,11 @@ const HomeView = () => {
 
     async function handleTaskDone(task: Task) {
 
+        validateToken()
+
         try {
+
+            setOpen(!open);
 
             if (!task.completed) {
                 task.completed = true
@@ -133,19 +166,22 @@ const HomeView = () => {
 
             await updateTask(task)
             setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
-        } catch (error) {
-            if (error instanceof Error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: error.message
-                })
-            }
+            setOpen(false);
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message
+            })
+            setOpen(false);
         }
 
     }
 
     async function handleTaskUpdate(task: Task) {
+
+        validateToken()
+
         const { value: text } = await Swal.fire({
             input: 'textarea',
             inputLabel: 'Descrição da tarefa',
@@ -160,19 +196,34 @@ const HomeView = () => {
 
         if (text) {
             task.description = text
-            await updateTask(task)
-            setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Tarefa atualizada com sucesso!',
-                showConfirmButton: false,
-                timer: 1500
-            })
+
+            try {
+                setOpen(!open);
+                await updateTask(task)
+                setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
+                setOpen(false);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Tarefa atualizada com sucesso!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            } catch (error: any) {
+                Swal.fire({
+                    icon: 'error',
+                    title: error.message
+                })
+                setOpen(false);
+            }
+
         }
     }
 
     const handleTaskDelete = (task: Task) => {
+
+        validateToken()
+        
         Swal.fire({
             title: 'Deseja excluir a tarefa selecionada?',
             text: "Não será possível reverter isto!",
@@ -191,21 +242,22 @@ const HomeView = () => {
     async function deleteTask(task: Task) {
 
         try {
+            setOpen(!open);
             await deleteSingleTask(task)
+            setOpen(false);
             Swal.fire(
                 'Deletado!',
                 'Tarefa deletada com sucesso!',
                 'success'
             )
             findAllTasks()
-        } catch (error) {
-            if (error instanceof Error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: error.message
-                })
-            }
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message
+            })
+            setOpen(false);
         }
     }
 
