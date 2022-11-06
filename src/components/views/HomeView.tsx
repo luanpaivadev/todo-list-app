@@ -223,7 +223,7 @@ const HomeView = () => {
 
         <Container>
 
-            <Box sx={{ flexGrow: 1, mb: 10 }}>
+            <Box sx={{ flexGrow: 1, mb: 11 }}>
                 <AppBar position="fixed">
                     <Toolbar>
                         <Grid
@@ -246,15 +246,13 @@ const HomeView = () => {
 
                 <Box sx={{
                     backgroundColor: '#2A2A2B',
-                    padding: 3,
-                    mt: 2
+                    padding: 2
                 }}>
 
                     <Title
                         text='LISTA DE TAREFAS'
                         marginTop="4"
-                        marginBotton="4"
-                    />
+                        marginBotton="4"/>
 
                     <InputComponent
                         task={task}
@@ -281,6 +279,7 @@ const HomeView = () => {
                 </Box>
 
             </Container>
+            
         </Container>
 
     )
