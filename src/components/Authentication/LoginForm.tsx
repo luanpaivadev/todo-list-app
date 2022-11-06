@@ -66,8 +66,8 @@ const LoginForm = () => {
                     title: error.message
                 })
             }
-            setOpen(false);
         }
+        setOpen(false);
 
     }
 
