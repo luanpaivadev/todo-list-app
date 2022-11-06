@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomeView from './components/views/HomeView';
 import LoginView from './components/views/LoginView';
 import NotFoundView from './components/views/NotFoundView';
+import PrivateRouter from './components/views/PrivateRoute';
 
 function App() {
 
@@ -22,7 +23,11 @@ function App() {
           <Routes>
             <Route path='/' element={<LoginView />} />
             <Route path='/login' element={<LoginView />} />
-            <Route path='/home' element={<HomeView />} />
+            <Route path='/home' element={
+              <PrivateRouter>
+                <HomeView />
+              </PrivateRouter>
+            } />
             <Route path='*' element={<NotFoundView />} />
           </Routes>
         </BrowserRouter>

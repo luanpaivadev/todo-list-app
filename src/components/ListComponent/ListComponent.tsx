@@ -1,6 +1,6 @@
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import Box from '@mui/material/Box';
 import Divider from "@mui/material/Divider";
 import Grid from '@mui/material/Grid';
@@ -9,8 +9,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Typography from '@mui/material/Typography';
+import React from 'react';
 import { Task } from "../views/HomeView";
-import { Stack } from '@mui/material';
 
 declare interface ListComponentProps {
     taskList: Task[],
@@ -37,7 +38,7 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                 {
                     props.taskList.length > 0 ?
                         props.taskList.map(task => (
-                            <div key={task.id}>
+                            <React.Fragment key={task.id}>
                                 <ListItem
                                     className={task.completed ? completed : noCompleted}
                                     disablePadding
@@ -50,23 +51,30 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                         <Grid container>
                                             <Grid item xs={11}>
                                                 <div onClick={() => props.done(task)}>
-                                                    <ListItemText sx={{ textAlign: 'justify', mr: 4 }}
-                                                        primary={`#${task.id} - ${task.description}`} />
+                                                    <ListItemText
+                                                        sx={{ textAlign: 'justify', mr: 4 }}
+                                                        primary={`- ${task.description}`}
+                                                    />
                                                     {
                                                         task.alarm &&
-                                                            <Grid 
-                                                                container 
-                                                                spacing={0.5}
-                                                                sx={{
-                                                                    color: '#1769aa'
-                                                                }} >
-                                                                <Grid item >
-                                                                    <AccessAlarmIcon />
-                                                                </Grid>
-                                                                <Grid item >
-                                                                    <small>{`Alarm in ${task.alarm}`}</small>
-                                                                </Grid>
+                                                        <Grid
+                                                            container
+                                                            spacing={0.5}
+                                                            sx={{
+                                                                color: '#1769aa'
+                                                            }} >
+                                                            <Grid item >
+                                                                <AccessAlarmIcon />
                                                             </Grid>
+                                                            <Grid item >
+                                                                <Typography
+                                                                    variant="overline"
+                                                                    gutterBottom
+                                                                    align='center'>
+                                                                    {`Alarm in ${task.alarm}`}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
                                                     }
                                                 </div>
                                             </Grid>
@@ -90,9 +98,18 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                 </ListItem>
 
                                 <Divider sx={{ border: '1px solid #fff' }} />
-                            </div>
+
+                            </React.Fragment>
                         ))
-                        : <p className="form-text text-center">Lista sem tarefas.</p>
+                        :
+                        <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            align='center'>
+                            Lista sem tarefas.
+                        </Typography>
+
                 }
             </List>
 

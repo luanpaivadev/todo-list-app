@@ -279,7 +279,7 @@ const HomeView = () => {
                 </Box>
 
             </Container>
-            
+
         </Container>
 
     )
