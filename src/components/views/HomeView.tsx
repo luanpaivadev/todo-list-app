@@ -89,16 +89,14 @@ const HomeView = () => {
             setOpen(!open);
 
             try {
-                await saveTask(task)
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Tarefa adicionada com sucesso!',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-
-                findAllTasks()
+                const response = await saveTask(task)
+                showMessageSuccess('Tarefa adicionada com sucesso!')
+                setTasks([...tasks, {
+                    id: response.id,
+                    description: response.description,
+                    completed: response.completed,
+                    alarm: response.alarm
+                }])
                 setTask(useStateInit)
                 setChecked(false)
                 setAlarm(null)
@@ -124,7 +122,6 @@ const HomeView = () => {
 
             await updateTask(task)
             setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
-            setOpen(false);
         } catch (error: any) {
             validateError(error)
         }
@@ -154,19 +151,11 @@ const HomeView = () => {
             try {
                 await updateTask(task)
                 setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
-                setOpen(false);
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Tarefa atualizada com sucesso!',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                showMessageSuccess('Tarefa atualizada com sucesso!')
             } catch (error: any) {
                 validateError(error)
             }
             setOpen(false);
-
         }
     }
 
@@ -193,13 +182,8 @@ const HomeView = () => {
 
         try {
             await deleteSingleTask(task)
-            setOpen(false);
-            Swal.fire(
-                'Deletado!',
-                'Tarefa deletada com sucesso!',
-                'success'
-            )
-            findAllTasks()
+            showMessageSuccess('Tarefa deletada com sucesso!')
+            setTasks(tasks.filter(tarefa => tarefa.id != task.id))
         } catch (error: any) {
             validateError(error)
         }
@@ -215,6 +199,16 @@ const HomeView = () => {
                 title: error.message
             })
         }
+    }
+
+    function showMessageSuccess(title: string) {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: title,
+            showConfirmButton: false,
+            timer: 1500
+        })
     }
 
     return (
