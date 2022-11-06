@@ -7,7 +7,6 @@ export async function findAll(): Promise<Task[]> {
 
     const config: AxiosRequestConfig<any> = {
         headers: { 
-            'content-type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
         }
     }
