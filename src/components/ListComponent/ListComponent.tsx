@@ -1,5 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import Box from '@mui/material/Box';
 import Divider from "@mui/material/Divider";
 import Grid from '@mui/material/Grid';
@@ -9,6 +10,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Task } from "../views/HomeView";
+import { Stack } from '@mui/material';
 
 declare interface ListComponentProps {
     taskList: Task[],
@@ -24,7 +26,7 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
     return (
 
         <Box>
-            
+
             <List sx={{
                 width: '100%',
                 maxHeight: 360,
@@ -36,7 +38,12 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                     props.taskList.length > 0 ?
                         props.taskList.map(task => (
                             <div key={task.id}>
-                                <ListItem className={task.completed ? completed : noCompleted} disablePadding>
+                                <ListItem
+                                    className={task.completed ? completed : noCompleted}
+                                    disablePadding
+                                    sx={{
+                                        p: 1
+                                    }}>
 
                                     <ListItemButton>
 
@@ -45,11 +52,22 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                                 <div onClick={() => props.done(task)}>
                                                     <ListItemText sx={{ textAlign: 'justify', mr: 4 }}
                                                         primary={`#${task.id} - ${task.description}`} />
-                                                    <Grid item>
-                                                        {
-                                                            task.alarm && <small>{`Alarm in ${task.alarm}`}</small>
-                                                        }
-                                                    </Grid>
+                                                    {
+                                                        task.alarm &&
+                                                            <Grid 
+                                                                container 
+                                                                spacing={0.5}
+                                                                sx={{
+                                                                    color: '#1769aa'
+                                                                }} >
+                                                                <Grid item >
+                                                                    <AccessAlarmIcon />
+                                                                </Grid>
+                                                                <Grid item >
+                                                                    <small>{`Alarm in ${task.alarm}`}</small>
+                                                                </Grid>
+                                                            </Grid>
+                                                    }
                                                 </div>
                                             </Grid>
                                             <Grid item xs={1}

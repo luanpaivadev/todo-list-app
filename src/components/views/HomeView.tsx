@@ -1,7 +1,11 @@
+import AppBar from "@mui/material/AppBar"
 import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 import CircularProgress from "@mui/material/CircularProgress"
 import Container from "@mui/material/Container"
+import Grid from "@mui/material/Grid"
+import Toolbar from "@mui/material/Toolbar"
 import { Dayjs } from "dayjs"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -211,46 +215,72 @@ const HomeView = () => {
         })
     }
 
+    function logout() {
+        navigate('/login')
+    }
+
     return (
 
-        <Container maxWidth="md">
+        <Container>
 
-            <Box sx={{
-                backgroundColor: '#2A2A2B',
-                padding: 3,
-                mt: 2
-            }}>
-
-                <Title
-                    text='LISTA DE TAREFAS'
-                    marginTop="4"
-                    marginBotton="4"
-                />
-
-                <InputComponent
-                    task={task}
-                    setTask={setTask}
-                    save={handleTaskSave}
-                    checked={checked}
-                    setChecked={setChecked}
-                    alarm={alarm}
-                    setAlarm={setAlarm} />
-
-                <ListComponent
-                    taskList={tasks}
-                    done={handleTaskDone}
-                    update={handleTaskUpdate}
-                    delete={handleTaskDelete} />
-
-                <Backdrop
-                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={open}
-                    onClick={handleClose}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
-
+            <Box sx={{ flexGrow: 1, mb: 10 }}>
+                <AppBar position="fixed">
+                    <Toolbar>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="flex-end"
+                            alignItems="center">
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                onClick={logout}>
+                                Logout
+                            </Button>
+                        </Grid>
+                    </Toolbar>
+                </AppBar>
             </Box>
 
+            <Container maxWidth="md">
+
+                <Box sx={{
+                    backgroundColor: '#2A2A2B',
+                    padding: 3,
+                    mt: 2
+                }}>
+
+                    <Title
+                        text='LISTA DE TAREFAS'
+                        marginTop="4"
+                        marginBotton="4"
+                    />
+
+                    <InputComponent
+                        task={task}
+                        setTask={setTask}
+                        save={handleTaskSave}
+                        checked={checked}
+                        setChecked={setChecked}
+                        alarm={alarm}
+                        setAlarm={setAlarm} />
+
+                    <ListComponent
+                        taskList={tasks}
+                        done={handleTaskDone}
+                        update={handleTaskUpdate}
+                        delete={handleTaskDelete} />
+
+                    <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={open}
+                        onClick={handleClose}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+
+                </Box>
+
+            </Container>
         </Container>
 
     )

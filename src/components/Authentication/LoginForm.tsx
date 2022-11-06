@@ -53,7 +53,6 @@ const LoginForm = () => {
                 return
             }
             sessionStorage.setItem('access_token', token)
-            setOpen(false);
             navigate('/home')
         } catch (error: any) {
             if (error.response) {
