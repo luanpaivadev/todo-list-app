@@ -35,6 +35,7 @@ const HomeView = () => {
 
     useEffect(() => {
         findAllTasks()
+        // eslint-disable-next-line
     }, [])
 
     const handleClose = () => {
