@@ -85,8 +85,8 @@ const LoginForm = () => {
                     <Title text="Login" />
 
                     {
-                        alert.length != 0 &&
-                        <Message text={alert} />
+                        alert.length !== 0 &&
+                            <Message text={alert} />
                     }
 
                     <TextField sx={{
@@ -96,6 +96,7 @@ const LoginForm = () => {
                         id="outlined-basic"
                         label="E-mail"
                         variant="outlined"
+                        type="email"
                         name="username"
                         onChange={handleUser}
                     />
@@ -116,7 +117,7 @@ const LoginForm = () => {
                             height: 50,
                             mt: 3
                         }}
-                        disabled={user.username == '' || user.password == '' ? true : false}
+                        disabled={user.username === '' || user.password === '' ? true : false}
                         variant="contained"
                         onClick={login}>
                         Login

@@ -51,10 +51,6 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                         <Grid container>
                                             <Grid item xs={11}>
                                                 <div onClick={() => props.done(task)}>
-                                                    <ListItemText
-                                                        sx={{ textAlign: 'justify', mr: 4 }}
-                                                        primary={`- ${task.description}`}
-                                                    />
                                                     {
                                                         task.alarm &&
                                                         <Grid
@@ -76,6 +72,10 @@ export const ListComponent: React.FC<ListComponentProps> = (props) => {
                                                             </Grid>
                                                         </Grid>
                                                     }
+                                                    <ListItemText
+                                                        sx={{ textAlign: 'justify', mr: 4 }}
+                                                        primary={`- ${task.description}`}
+                                                    />
                                                 </div>
                                             </Grid>
                                             <Grid item xs={1}

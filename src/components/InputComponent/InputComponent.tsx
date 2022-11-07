@@ -70,7 +70,7 @@ const InputComponent: React.FC<InputComponentProps> = (props) => {
                         </LocalizationProvider>
 
                         <Button
-                            disabled={props.task.description == '' ? true : false}
+                            disabled={props.task.description === '' ? true : false}
                             variant="contained"
                             size="large"
                             onClick={() => props.save(props.task)}

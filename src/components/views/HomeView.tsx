@@ -64,7 +64,7 @@ const HomeView = () => {
         const interval = setInterval(() => {
             const date = new Date()
             const currentTime = `${date.getHours()}:${date.getMinutes()}`
-            if (currentTime == alarmIn) {
+            if (currentTime === alarmIn) {
 
                 const audio = new Audio(sound)
                 audio.play()
@@ -188,7 +188,7 @@ const HomeView = () => {
         try {
             await deleteSingleTask(task)
             showMessageSuccess('Tarefa deletada com sucesso!')
-            setTasks(tasks.filter(tarefa => tarefa.id != task.id))
+            setTasks(tasks.filter(tarefa => tarefa.id !== task.id))
         } catch (error: any) {
             validateError(error)
         }
@@ -196,7 +196,7 @@ const HomeView = () => {
     }
 
     function validateError(error: any) {
-        if (error.response.status == 401) {
+        if (error.response.status === 401) {
             navigate('/login')
         } else {
             Swal.fire({
