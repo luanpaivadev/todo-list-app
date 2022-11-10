@@ -6,7 +6,7 @@ import { http } from "./utils/Axios";
 export async function findAll(): Promise<Task[]> {
 
     const config: AxiosRequestConfig<any> = {
-        headers: { 
+        headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
         }
     }
@@ -16,26 +16,25 @@ export async function findAll(): Promise<Task[]> {
     return response.data;
 }
 
-export async function saveTask(task: Task): Promise<Task> {
+export async function saveTask(task: Task) {
 
     const config: AxiosRequestConfig<any> = {
-        headers: { 
+        headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
         }
     }
 
-    const response = await http.post<Task>('/v1/tasks', {
+    http.post<Task>('/v1/tasks', {
         description: task.description,
         completed: task.completed,
         alarm: task.alarm
     }, config);
-    return response.data;
 }
 
 export async function updateTask(task: Task): Promise<Task> {
 
     const config: AxiosRequestConfig<any> = {
-        headers: { 
+        headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
         }
     }
@@ -51,7 +50,7 @@ export async function updateTask(task: Task): Promise<Task> {
 export function deleteSingleTask(task: Task) {
 
     const config: AxiosRequestConfig<any> = {
-        headers: { 
+        headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('access_token')
         }
     }
@@ -75,7 +74,7 @@ export async function validateTokenApi(token: string) {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
         url: '/v1/keycloak/validate/token',
         params: {
-            'token' : token
+            'token': token
         }
     });
 }

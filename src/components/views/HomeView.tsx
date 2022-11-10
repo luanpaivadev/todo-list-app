@@ -94,18 +94,12 @@ const HomeView = () => {
             setOpen(!open);
 
             try {
-                const response = await saveTask(task)
+                await saveTask(task)
                 showMessageSuccess('Tarefa adicionada com sucesso!')
-                setTasks([...tasks, {
-                    id: response.id,
-                    description: response.description,
-                    completed: response.completed,
-                    alarm: response.alarm
-                }])
                 setTask(useStateInit)
                 setChecked(false)
                 setAlarm(null)
-
+                findAllTasks()
             } catch (error: any) {
                 validateError(error)
             }
