@@ -48,7 +48,7 @@ const LoginForm = () => {
         try {
             const response = await loginApp(user)
             const token = response.data.access_token
-            if (token == null) {
+            if (token === null) {
                 setAlert('Usuário ou senha inválidos')
                 return
             }
@@ -56,8 +56,9 @@ const LoginForm = () => {
             navigate('/home')
         } catch (error: any) {
             if (error.response) {
-                if (error.response.data.includes('User not found')) {
-                    setAlert('Usuário ou senha inválidos.')
+                const message = "Email ou senha inválidos"
+                if (error.response.data.message.includes(message)) {
+                    setAlert(message)
                 }
             } else {
                 Swal.fire({
