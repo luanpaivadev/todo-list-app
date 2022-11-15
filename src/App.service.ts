@@ -24,7 +24,7 @@ export async function saveTask(task: Task) {
         }
     }
 
-    http.post<Task>('/v1/tasks', {
+    return http.post<Task>('/v1/tasks', {
         description: task.description,
         completed: task.completed,
         alarm: task.alarm
