@@ -25,6 +25,13 @@ const LoginForm = () => {
     const [alert, setAlert] = useState('')
     const navigate = useNavigate()
 
+    useEffect(() => {
+        const token = sessionStorage.getItem("access_token")
+        if (token !== null) {
+            navigate("/home")
+        }
+    }, [])
+
     function handleUser(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target
         setUser({
