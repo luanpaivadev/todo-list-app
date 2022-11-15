@@ -48,9 +48,11 @@ const HomeView = () => {
 
         try {
             const _tasks = await findAll()
-            setTasks(_tasks)
-            const taskList = _tasks.filter(task => task.alarm != null && task.alarm.length > 0)
-            taskList.forEach(alarmIn)
+            if (_tasks !== null) {
+                setTasks(_tasks)
+                const taskList = _tasks.filter(task => task.alarm != null && task.alarm.length > 0)
+                taskList.forEach(alarmIn)
+            }
         } catch (error: any) {
             validateError(error)
         }
@@ -150,9 +152,11 @@ const HomeView = () => {
             setOpen(!open);
 
             try {
-                await updateTask(task)
-                setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
-                showMessageSuccess('Tarefa atualizada com sucesso!')
+                const response = await updateTask(task)
+                if (response !== null) {
+                    setTasks(tasks.map(tarefa => task.id === tarefa.id ? task : tarefa))
+                    showMessageSuccess('Tarefa atualizada com sucesso!')
+                }
             } catch (error: any) {
                 validateError(error)
             }
@@ -182,9 +186,11 @@ const HomeView = () => {
         setOpen(!open);
 
         try {
-            await deleteSingleTask(task)
-            showMessageSuccess('Tarefa deletada com sucesso!')
-            setTasks(tasks.filter(tarefa => tarefa.id !== task.id))
+            const response = await deleteSingleTask(task)
+            if (response !== null) {
+                showMessageSuccess('Tarefa deletada com sucesso!')
+                setTasks(tasks.filter(tarefa => tarefa.id !== task.id))
+            }
         } catch (error: any) {
             validateError(error)
         }
