@@ -211,6 +211,7 @@ const HomeView = () => {
     }
 
     function logout() {
+        sessionStorage.removeItem('access_token')
         navigate('/login')
     }
 
@@ -247,7 +248,7 @@ const HomeView = () => {
                     <Title
                         text='LISTA DE TAREFAS'
                         marginTop="4"
-                        marginBotton="4"/>
+                        marginBotton="4" />
 
                     <InputComponent
                         task={task}

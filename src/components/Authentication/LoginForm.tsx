@@ -25,10 +25,6 @@ const LoginForm = () => {
     const [alert, setAlert] = useState('')
     const navigate = useNavigate()
 
-    useEffect(() => {
-        sessionStorage.removeItem('access_token')
-    }, [])
-
     function handleUser(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target
         setUser({
