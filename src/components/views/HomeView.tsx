@@ -190,7 +190,7 @@ const HomeView = () => {
     }
 
     function validateError(error: any) {
-        if (error.response.status === 401) {
+        if (error.response.status === 401 || error.response.status === 403) {
             navigate('/login')
         } else {
             Swal.fire({
