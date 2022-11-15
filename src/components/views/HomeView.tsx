@@ -95,14 +95,14 @@ const HomeView = () => {
 
             try {
                 await saveTask(task)
-                showMessageSuccess('Tarefa adicionada com sucesso!')
                 setTask(useStateInit)
                 setChecked(false)
                 setAlarm(null)
-                findAllTasks()
             } catch (error: any) {
                 validateError(error)
             }
+            showMessageSuccess('Tarefa adicionada com sucesso!')
+            findAllTasks()
             setOpen(false);
         }
     }
