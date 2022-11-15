@@ -30,6 +30,7 @@ const LoginForm = () => {
         if (token !== null) {
             navigate("/home")
         }
+        // eslint-disable-next-line
     }, [])
 
     function handleUser(event: React.ChangeEvent<HTMLInputElement>) {
