@@ -1,0 +1,15 @@
+version: '3'
+
+networks:
+  todolist-network:
+    driver: bridge
+
+services:
+  todolist-app:
+    image: todolist-app
+    ports:
+      - "3000:80"
+    networks:
+      - todolist-network
+    volumes:
+      - ./meu-app:/app
